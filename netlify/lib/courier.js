@@ -1,60 +1,50 @@
 import { CourierClient } from "@trycourier/courier";
-import { ApiClient } from "twitch";
-import { ClientCredentialsAuthProvider } from "twitch-auth";
+import { createEmbed } from "./discord";
 
 const courier = CourierClient();
-const authProvider = new ClientCredentialsAuthProvider(
-  process.env.TWITCH_CLIENT_ID,
-  process.env.TWITCH_CLIENT_SECRET
-);
-const twitch = new ApiClient({ authProvider });
 
-export async function sendOnline(event) {
-  const data = await getStreamData(event.broadcaster_user_id);
+export async function sendOnline(streamer) {
+  const embed = await createEmbed(streamer);
 
-  const { messageId } = await courier.lists.send({
-    event: "TWITCH_ITSAYDRIAN_ONLINE",
-    list: "itsaydrian.stream.online",
-    data
+  const { messageId } = await courier.send({
+    event: "TGA_STREAMER_ONLINE",
+    recipientId: "CHANNEL_GOING_LIVE",
+    data: {
+      streamer,
+      embed
+    }
   });
   console.log(
-    `Online notification for ${event.broadcaster_user_name} sent. Message ID: ${messageId}.`
+    `Online notification for ${streamer.name} sent. Message ID: ${messageId}.`
   );
+  return messageId;
 }
 
-const getStreamData = async (userId) => {
-  const stream = await twitch.helix.streams.getStreamByUserId(userId);
-  if (!stream) {
-    console.log(`No current stream for ${userId}.`);
-    return {};
-  }
-  const broadcaster = await stream.getUser();
-  const game = await stream.getGame();
-
-  const data = {
-    stream: {
-      id: stream.id,
-      type: stream.type,
-      startDate: stream.startDate,
-      title: stream.title,
-      thumbnailUrl: stream.thumbnailUrl.replace("-{width}x{height}", ""),
-      viewers: stream.viewers
-    },
-    game: {
-      id: game.id,
-      name: game.name,
-      boxArtUrl: game.boxArtUrl.replace("-{width}x{height}", "")
-    },
-    broadcaster: {
-      id: broadcaster.id,
-      type: broadcaster.broadcasterType,
-      userType: broadcaster.type,
-      name: broadcaster.name,
-      displayName: broadcaster.displayName,
-      description: broadcaster.description,
-      profilePictureUrl: broadcaster.profilePictureUrl,
-      views: broadcaster.views
+export async function sendOffline(streamer) {
+  const { messageId } = await courier.send({
+    eventId: "TGA_STREAMER_OFFLINE",
+    recipientId: "CHANNEL_GOING_LIVE",
+    data: {
+      streamer,
+      discord: {
+        replyId: streamer.online
+      }
     }
-  };
-  return data;
-};
+  });
+  console.log(
+    `Offline notification for ${streamer.name} sent. Message ID: ${messageId}.`
+  );
+  return messageId;
+}
+
+export async function discordAlert(type, message) {
+  const { messageId } = await courier.send({
+    eventId: "TGA_ALERT",
+    recipientId: "CHANNEL_BOT_TESTING",
+    data: {
+      type,
+      message
+    }
+  });
+  return messageId;
+}
