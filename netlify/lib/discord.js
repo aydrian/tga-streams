@@ -25,6 +25,7 @@ export const createEmbed = async (streamer) => {
       embed = {
         ...embed,
         title: stream.title,
+        description: `Playing ${stream.gameName}`,
         image: {
           url: `${stream.thumbnailUrl.replace(
             "-{width}x{height}",
@@ -40,7 +41,6 @@ export const createEmbed = async (streamer) => {
         );
       });
       if (game) {
-        embed.description = `Playing ${game.name}`;
         embed.thumbnail = {
           url: `${game.boxArtUrl.replace("-{width}x{height}", "")}?r=${randInt}`
         };
