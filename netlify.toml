@@ -3,8 +3,8 @@
   publish = "out"
 
 [[redirects]]
-  from = "/webhooks/twitch"
-  to = "/.netlify/functions/twitch"
+  from = "/webhooks/:splat"
+  to = "/.netlify/functions/:splat"
   status = 200
 
 [functions]

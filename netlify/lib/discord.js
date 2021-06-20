@@ -7,6 +7,11 @@ const getRandomInt = (max) => {
 export const createEmbed = async (streamer) => {
   try {
     // random integer to help with Discord caching
+    let embed = {
+      color: 9520895,
+      url: `https://twitch.tv/${streamer.twitch.name}`,
+      author: { name: streamer.twitch.name }
+    };
     const randInt = getRandomInt(999999);
     const stream = await twitch.helix.streams
       .getStreamByUserId(streamer.twitch.id)
@@ -16,6 +21,31 @@ export const createEmbed = async (streamer) => {
           ex
         );
       });
+    if (stream) {
+      embed = {
+        ...embed,
+        title: stream.title,
+        image: {
+          url: `${stream.thumbnailUrl.replace(
+            "-{width}x{height}",
+            ""
+          )}?r=${randInt}`
+        }
+      };
+
+      const game = await stream.getGame().catch((ex) => {
+        console.log(
+          `An error occurred retrieving game for ${streamer.name}.`,
+          ex
+        );
+      });
+      if (game) {
+        embed.description = `Playing ${game.name}`;
+        embed.thumbnail = {
+          url: `${game.boxArtUrl.replace("-{width}x{height}", "")}?r=${randInt}`
+        };
+      }
+    }
 
     const twitchUser = await twitch.helix.users
       .getUserById(streamer.twitch.id)
@@ -25,33 +55,9 @@ export const createEmbed = async (streamer) => {
           ex
         );
       });
-    const game = await stream.getGame().catch((ex) => {
-      console.log(
-        `An error occurred retrieving game for ${streamer.name}.`,
-        ex
-      );
-    });
 
-    const embed = {
-      title: stream.title,
-      url: `https://twitch.tv/${streamer.twitch.name}`,
-      color: 9520895,
-      author: {
-        name: streamer.twitch.name,
-        icon_url: twitchUser.profilePictureUrl
-      },
-      image: {
-        url: `${stream.thumbnailUrl.replace(
-          "-{width}x{height}",
-          ""
-        )}?r=${randInt}`
-      }
-    };
-    if (game) {
-      embed.description = `Playing ${game.name}`;
-      embed.thumbnail = {
-        url: `${game.boxArtUrl.replace("-{width}x{height}", "")}?r=${randInt}`
-      };
+    if (twitchUser) {
+      embed.author.icon_url = twitchUser.profilePictureUrl;
     }
     return embed;
   } catch (ex) {
