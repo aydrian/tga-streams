@@ -7,7 +7,7 @@ export async function sendOnline(streamer) {
   const embed = await createEmbed(streamer);
 
   const { messageId } = await courier.send({
-    event: "TGA_STREAMER_ONLINE",
+    eventId: "TGA_STREAMER_ONLINE",
     recipientId: "CHANNEL_GOING_LIVE",
     data: {
       streamer,
