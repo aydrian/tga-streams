@@ -12,6 +12,13 @@ export async function sendOnline(streamer) {
     data: {
       streamer,
       embed
+    },
+    override: {
+      discord: {
+        body: {
+          embed
+        }
+      }
     }
   });
   console.log(
