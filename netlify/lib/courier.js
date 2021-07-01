@@ -16,7 +16,7 @@ export async function sendOnline(streamer) {
     override: {
       discord: {
         body: {
-          embed
+          embeds: [embed]
         }
       }
     }
