@@ -28,8 +28,8 @@ export const createEmbed = async (streamer) => {
         description: `Playing ${stream.gameName}`,
         image: {
           url: `${stream.thumbnailUrl.replace(
-            "-{width}x{height}",
-            ""
+            "{width}x{height}",
+            "1280x720"
           )}?r=${randInt}`
         }
       };
