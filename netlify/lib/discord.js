@@ -20,19 +20,14 @@ export const createMessage = async (channelId, msgData) => {
   return data;
 };
 
-const getRandomInt = (max) => {
-  return Math.floor(Math.random() * Math.floor(max));
-};
-
 export const createEmbed = async (streamer) => {
   try {
-    // random integer to help with Discord caching
     let embed = {
       color: 9520895,
       url: `https://twitch.tv/${streamer.twitch.name}`,
       author: { name: streamer.twitch.name }
     };
-    const randInt = getRandomInt(999999);
+
     const stream = await twitch.helix.streams
       .getStreamByUserId(streamer.twitch.id)
       .catch((ex) => {
@@ -47,10 +42,7 @@ export const createEmbed = async (streamer) => {
         title: stream.title,
         description: `Playing ${stream.gameName}`,
         image: {
-          url: `${stream.thumbnailUrl.replace(
-            "{width}x{height}",
-            "1280x720"
-          )}?r=${randInt}`
+          url: `${stream.thumbnailUrl.replace("{width}x{height}", "1280x720")}`
         }
       };
 
@@ -62,7 +54,7 @@ export const createEmbed = async (streamer) => {
       });
       if (game) {
         embed.thumbnail = {
-          url: `${game.boxArtUrl.replace("-{width}x{height}", "")}?r=${randInt}`
+          url: `${game.boxArtUrl.replace("-{width}x{height}", "")}`
         };
       }
     }
