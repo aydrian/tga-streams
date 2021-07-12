@@ -8,7 +8,8 @@
     "export": "next export"
   },
   "dependencies": {
-    "@trycourier/courier": "^2.3.0",
+    "axios": "^0.21.1",
+    "discord.js": "^12.5.3",
     "mongodb": "^3.6.9",
     "next": "^11.0.0",
     "react": "^17.0.2",

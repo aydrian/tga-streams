@@ -1,6 +1,6 @@
 import { MongoClient } from "mongodb";
 import withVerifyTwitch from "../lib/withVerifyTwitch";
-import { sendOffline, sendOnline } from "../lib/courier";
+import { sendOffline, sendOnline } from "../lib/discord";
 
 const uri = `mongodb+srv://${process.env.MONGODB_USER}:${process.env.MONGODB_PASSWORD}@cluster0.plqyk.mongodb.net/tgabot?retryWrites=true&w=majority`;
 
@@ -79,10 +79,10 @@ async function twitchHandler(event, context) {
 
       if (type === "stream.online") {
         if (!streamer.online) {
-          const messageId = await sendOnline(streamer);
+          const message = await sendOnline(streamer);
           await collection.updateOne(
             { id: streamer.id },
-            { $set: { messageId } }
+            { $set: { online: message.id } }
           );
         }
       } else if (type === "stream.offline") {
