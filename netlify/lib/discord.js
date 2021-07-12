@@ -8,7 +8,7 @@ const CHANNELS = {
 
 export const createMessage = async (channelId, msgData) => {
   const { data } = await axios.post(
-    `https://discord.com/api/${channelId}/messages`,
+    `https://discord.com/api/channels/${channelId}/messages`,
     msgData,
     {
       headers: {
