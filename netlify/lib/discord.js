@@ -3,7 +3,7 @@ import { twitch } from "./twitch";
 
 const CHANNELS = {
   BOT_TESTING: "785256298203447296",
-  GOING_LIVE: "785256298203447296" //"775445396776288318"
+  GOING_LIVE: "775445396776288318"
 };
 
 export const getMessage = async (channelId, messageId) => {
