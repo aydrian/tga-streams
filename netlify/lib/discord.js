@@ -123,16 +123,20 @@ export const createEmbed = async (streamer, online = true) => {
         streamer.twitch.id,
         { limit: 1, orderBy: "time" }
       );
-      const video = data[0];
+
       embed.color = 12632256;
-      embed.title = video.title;
-      embed.url = `https://twitch.tv/videos/${video.id}`;
-      embed.image = {
-        url: video.thumbnailUrl.replace("%{width}x%{height}", "1280x720")
-      };
-      embed.footer = {
-        text: `Finished streaming • Streamed for ${video.duration}`
-      };
+      const video = data[0];
+      if (video) {
+        embed.title = video.title;
+        embed.url = `https://twitch.tv/videos/${video.id}`;
+        embed.image = {
+          url: video.thumbnailUrl.replace("%{width}x%{height}", "1280x720")
+        };
+        embed.footer = {
+          text: `Finished streaming • Streamed for ${video.duration}`
+        };
+      }
+
       return embed;
     } catch (ex) {
       console.log(`Error creating offline embed for ${streamer.name}`, ex);
