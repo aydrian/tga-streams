@@ -55,7 +55,7 @@ export const createEmbed = async (streamer, online = true) => {
         author: { name: streamer.twitch.name }
       };
 
-      const stream = await twitch.helix.streams
+      const stream = await twitch.streams
         .getStreamByUserId(streamer.twitch.id)
         .catch((ex) => {
           console.log(
@@ -90,7 +90,7 @@ export const createEmbed = async (streamer, online = true) => {
         }
       }
 
-      const twitchUser = await twitch.helix.users
+      const twitchUser = await twitch.users
         .getUserById(streamer.twitch.id)
         .catch((ex) => {
           console.log(
@@ -119,10 +119,10 @@ export const createEmbed = async (streamer, online = true) => {
         return {};
       }
 
-      const { data } = await twitch.helix.videos.getVideosByUser(
-        streamer.twitch.id,
-        { limit: 1, orderBy: "time" }
-      );
+      const { data } = await twitch.videos.getVideosByUser(streamer.twitch.id, {
+        limit: 1,
+        orderBy: "time"
+      });
 
       embed.color = 12632256;
       const video = data[0];
