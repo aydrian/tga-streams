@@ -1,0 +1,56 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "cockroachdb"
+  url      = env("DATABASE_URL")
+}
+
+model Streamer {
+  twitchId      String         @id @map("twitch_id")
+  twitchName    String         @map("twitch_name")
+  discordId     String         @map("discord_id")
+  discordName   String         @map("discord_name")
+  profileImgUrl String?        @map("profile_image_url")
+  Subscriptions Subscription[]
+  Stream        Stream[]
+
+  @@map("streamers")
+}
+
+model Subscription {
+  id         String   @id
+  type       String
+  streamerId String   @map("streamer_id")
+  streamer   Streamer @relation(fields: [streamerId], references: [twitchId], onDelete: Cascade, onUpdate: NoAction)
+
+  @@map("subscriptions")
+}
+
+model Stream {
+  id         String    @id
+  title      String?
+  game_name  String?
+  startedAt  DateTime? @map("started_at") @db.Timestamptz(6)
+  endedAt    DateTime? @map("ended_at") @db.Timestamptz(6)
+  streamerId String    @map("streamer_id")
+  streamer   Streamer  @relation(fields: [streamerId], references: [twitchId], onDelete: Cascade, onUpdate: NoAction, map: "fk_streamer_id_ref_streamers")
+
+  Notification Notification[]
+
+  @@map("streams")
+}
+
+model Notification {
+  id        String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  messageId String @map("message_id")
+  channelId String @map("channel_id")
+  streamId  String @map("stream_id")
+  Stream    Stream @relation(fields: [streamId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@map("notifications")
+}

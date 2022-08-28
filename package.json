@@ -4,20 +4,24 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "prisma generate && next build",
     "export": "next export"
   },
+  "prisma": {
+    "seed": "node prisma/seed.js"
+  },
   "dependencies": {
-    "@twurple/api": "^5.0.9",
-    "@twurple/auth": "^5.0.9",
+    "@prisma/client": "^4.2.1",
+    "@twurple/api": "^5.2.3",
+    "@twurple/auth": "^5.2.3",
     "axios": "^0.24.0",
-    "discord.js": "^12.5.3",
     "matter-js": "^0.17.1",
-    "mongodb": "^4.2.2",
     "next": "^11.1.2",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
-    "saslprep": "^1.0.3",
     "tmi.js": "^1.8.5"
+  },
+  "devDependencies": {
+    "prisma": "^4.2.1"
   }
 }

@@ -1,12 +1,12 @@
 [build]
-  command = "npm run build"
-  publish = "out"
+command = "npm run build"
+publish = "out"
 
 [[redirects]]
-  from = "/webhooks/:splat"
-  to = "/.netlify/functions/:splat"
-  status = 200
+from = "/webhooks/twitch"
+to = "/.netlify/functions/twitch_eventsub"
+status = 200
 
 [functions]
-  node_bundler = "esbuild"
-  external_node_modules = ["mongodb-client-encryption"]
+node_bundler = "esbuild"
+external_node_modules = ["@ampproject/toolbox-optimizer"]
