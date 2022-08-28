@@ -23,23 +23,22 @@ model Streamer {
 }
 
 model Subscription {
-  id          String   @id
-  type        String
-  streamer_id String
-  streamer    Streamer @relation(fields: [streamer_id], references: [twitchId], onDelete: Cascade, onUpdate: NoAction)
+  id         String   @id
+  type       String
+  streamerId String   @map("streamer_id")
+  streamer   Streamer @relation(fields: [streamerId], references: [twitchId], onDelete: Cascade, onUpdate: NoAction)
 
   @@map("subscriptions")
 }
 
 model Stream {
-  id          String    @id
-  title       String?
-  view_count  Int?
-  game_name   String?
-  started_at  DateTime? @db.Timestamptz(6)
-  ended_at    DateTime? @db.Timestamptz(6)
-  streamer_id String
-  streamer    Streamer  @relation(fields: [streamer_id], references: [twitchId], onDelete: Cascade, onUpdate: NoAction, map: "fk_streamer_id_ref_streamers")
+  id         String    @id
+  title      String?
+  game_name  String?
+  startedAt  DateTime? @map("started_at") @db.Timestamptz(6)
+  endedAt    DateTime? @map("ended_at") @db.Timestamptz(6)
+  streamerId String    @map("streamer_id")
+  streamer   Streamer  @relation(fields: [streamerId], references: [twitchId], onDelete: Cascade, onUpdate: NoAction, map: "fk_streamer_id_ref_streamers")
 
   Notification Notification[]
 
@@ -48,8 +47,10 @@ model Stream {
 
 model Notification {
   id        String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  stream_id String
-  Stream    Stream @relation(fields: [stream_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  messageId String @map("message_id")
+  channelId String @map("channel_id")
+  streamId  String @map("stream_id")
+  Stream    Stream @relation(fields: [streamId], references: [id], onDelete: Cascade, onUpdate: NoAction)
 
   @@map("notifications")
 }

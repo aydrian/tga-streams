@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "prisma generate && next build",
     "export": "next export"
   },
   "prisma": {
@@ -17,11 +17,9 @@
     "axios": "^0.24.0",
     "discord.js": "^12.5.3",
     "matter-js": "^0.17.1",
-    "mongodb": "^4.2.2",
     "next": "^11.1.2",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
-    "saslprep": "^1.0.3",
     "tmi.js": "^1.8.5"
   },
   "devDependencies": {
