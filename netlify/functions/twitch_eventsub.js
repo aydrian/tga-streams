@@ -31,7 +31,7 @@ async function twitchHandler(event, _context) {
     } = body;
 
     console.log(
-      `Receiving ${type} request for ${event.broadcaster_user_name}: `,
+      `Receiving ${type} request for ${event.broadcaster_user_name}:  `,
       event
     );
 
