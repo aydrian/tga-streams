@@ -12,10 +12,9 @@
   },
   "dependencies": {
     "@prisma/client": "^4.2.1",
-    "@twurple/api": "^5.0.9",
-    "@twurple/auth": "^5.0.9",
+    "@twurple/api": "^5.2.3",
+    "@twurple/auth": "^5.2.3",
     "axios": "^0.24.0",
-    "discord.js": "^12.5.3",
     "matter-js": "^0.17.1",
     "next": "^11.1.2",
     "react": "^17.0.2",
