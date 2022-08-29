@@ -101,7 +101,7 @@ export const createOfflineEmbed = async (messageId, video) => {
 export const sendOnline = async (discordUser, stream, streamer, game) => {
   const embed = await createOnlineEmbed(stream, streamer, game);
   const message = createMessage(CHANNELS.GOING_LIVE, {
-    content: `🔴 <@${discordUser.discordId}> is now live on Twitch! https://twitch.tv/${streamer.twitchName}`,
+    content: `🔴 <@${discordUser.discordId}> is now live on Twitch! https://twitch.tv/${streamer.name}`,
     embeds: [embed]
   });
   return message;
