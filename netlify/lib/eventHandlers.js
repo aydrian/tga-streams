@@ -3,7 +3,8 @@ import {
   getDiscordUser,
   revokeSubscription,
   saveNotification,
-  saveStream
+  saveStream,
+  updateStream
 } from "./db";
 import { sendOffline, sendOnline } from "./discord";
 import { twitch } from "./twitch";
