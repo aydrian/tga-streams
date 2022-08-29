@@ -69,8 +69,8 @@ export const createOnlineEmbed = async (stream, streamer, game) => {
     }
   }
 
-  if (twitchUser) {
-    embed.author.icon_url = twitchUser.profilePictureUrl;
+  if (streamer) {
+    embed.author.icon_url = streamer.profilePictureUrl;
   }
 
   return embed;
