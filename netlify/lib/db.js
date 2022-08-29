@@ -31,7 +31,7 @@ export const findStream = async (streamerId) => {
     select: {
       id: true,
       gameName: true,
-      notifications: true
+      Notification: true
     },
     where: {
       streamerId,

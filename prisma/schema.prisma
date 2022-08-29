@@ -34,7 +34,7 @@ model Subscription {
 model Stream {
   id         String    @id
   title      String?
-  game_name  String?
+  gameName   String?   @map("game_name")
   startedAt  DateTime? @map("started_at") @db.Timestamptz(6)
   endedAt    DateTime? @map("ended_at") @db.Timestamptz(6)
   streamerId String    @map("streamer_id")

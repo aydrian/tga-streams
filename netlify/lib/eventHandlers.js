@@ -35,11 +35,11 @@ export const handleStreamOffline = async (event) => {
 
   await updateStream(findStreamResult.id);
 
-  if (findStreamResult.notifications.length === 0) {
+  if (findStreamResult.Notification.length === 0) {
     console.log(`No notification saved for stream.`);
     return;
   }
-  const [notif] = findStreamResult.notifications;
+  const [notif] = findStreamResult.Notification;
   const { data } = await twitch.videos.getVideosByUser(
     event.broadcaster_user_id,
     { limit: 1, orderBy: "time" }
