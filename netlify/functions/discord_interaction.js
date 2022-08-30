@@ -25,6 +25,7 @@ async function discordHandler(event, _context) {
     console.log("Application Command");
     return {
       statusCode: 200,
+      headers: { "content-type": "application/json" },
       body: JSON.stringify({
         type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
         data: {
