@@ -12,7 +12,6 @@ async function discordHandler(event, _context) {
   }
 
   const interaction = JSON.parse(event.body);
-  console.log(interaction);
 
   if (interaction.type === InteractionType.PING) {
     return {
@@ -22,7 +21,7 @@ async function discordHandler(event, _context) {
       })
     };
   } else if (interaction.type === InteractionType.APPLICATION_COMMAND) {
-    console.log("Application Command");
+    console.log("Application Command data: ", interaction.data);
     return {
       statusCode: 200,
       headers: { "content-type": "application/json" },
