@@ -12,6 +12,7 @@ async function discordHandler(event, _context) {
   }
 
   const interaction = JSON.parse(event.body);
+  console.log(interaction);
 
   if (interaction.type === InteractionType.PING) {
     return {
