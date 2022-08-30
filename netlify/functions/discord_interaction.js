@@ -22,6 +22,7 @@ async function discordHandler(event, _context) {
       })
     };
   } else if (interaction.type === InteractionType.APPLICATION_COMMAND) {
+    console.log("Application Command");
     return {
       statusCode: 200,
       body: JSON.stringify({
