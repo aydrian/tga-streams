@@ -15,6 +15,7 @@ async function twitchHandler(event, _context) {
   }
 
   const body = JSON.parse(event.body);
+  const messageId = event.headers["twitch-eventsub-message-id"];
   const messageType = event.headers["twitch-eventsub-message-type"];
   if (messageType === "webhook_callback_verification") {
     return {
@@ -31,7 +32,7 @@ async function twitchHandler(event, _context) {
     } = body;
 
     console.log(
-      `Receiving ${type} request for ${event.broadcaster_user_name}:  `,
+      `Receiving ${type} request for ${event.broadcaster_user_name} (${messageId}):  `,
       event
     );
 

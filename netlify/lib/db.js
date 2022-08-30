@@ -49,7 +49,7 @@ export const updateStream = async (streamId) => {
       endedAt: new Date()
     },
     where: {
-      streamId
+      id: streamId
     }
   });
   return updateStream;
