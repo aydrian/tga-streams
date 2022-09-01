@@ -28,7 +28,7 @@ const getListStreamersResponse = async () => {
       `${streamer._count.Stream > 0 ? "🔴 " : ""}${streamer.discordName}: ${
         streamer.twitchName
       } <https://twitch.tv/${streamer.twitchName}> ${
-        streamer._count.Subscription > 0 ? "✅" : ""
+        streamer._count.Subscriptions > 0 ? "✅" : ""
       }`
     );
   }
