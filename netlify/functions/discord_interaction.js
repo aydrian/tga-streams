@@ -1,6 +1,6 @@
 import { InteractionResponseType, InteractionType } from "discord-interactions";
-
-import withVerifyDiscord from "netlify/lib/withVerifyDiscord";
+import { handleStreamers } from "../lib/interactionHandler";
+import withVerifyDiscord from "../lib/withVerifyDiscord";
 
 async function discordHandler(event, _context) {
   if (event.httpMethod !== "POST") {
@@ -22,17 +22,18 @@ async function discordHandler(event, _context) {
     };
   } else if (interaction.type === InteractionType.APPLICATION_COMMAND) {
     console.log("Application Command data: ", interaction.data);
-    return {
-      statusCode: 200,
-      headers: { "content-type": "application/json" },
-      body: JSON.stringify({
-        type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
-        data: {
-          content: `You used: ${interaction.data.name}`
-        }
-      })
-    };
+
+    if (interaction.data.name === "streamers") {
+      const response = await handleStreamers(interaction);
+      return {
+        statusCode: 200,
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify(response)
+      };
+    }
   }
+
+  return { statusCode: 200 };
 }
 
 export const handler = withVerifyDiscord(discordHandler);

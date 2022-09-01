@@ -85,3 +85,17 @@ export const getDiscordUser = async (twitchId) => {
 
   return discordUser;
 };
+
+export const getStreamers = async () => {
+  const streamers = await prisma.streamer.findMany({
+    select: {
+      twitchName: true,
+      discordName: true,
+      _count: {
+        select: { Subscriptions: true, Stream: { where: { endedAt: null } } }
+      }
+    }
+  });
+
+  return streamers;
+};
