@@ -91,13 +91,18 @@ export const getStreamers = async () => {
     select: {
       twitchName: true,
       discordName: true,
+      Stream: {
+        where: {
+          endedAt: null
+        }
+      },
       _count: {
         select: {
-          Subscriptions: true,
-          Stream: { where: { endedAt: null } }
+          Subscriptions: true
         }
       }
-    }
+    },
+    orderBy: { discordName: "asc" }
   });
 
   return streamers;
