@@ -85,3 +85,23 @@ export const getDiscordUser = async (twitchId) => {
 
   return discordUser;
 };
+
+export const hasProcessed = async (messageId) => {
+  const count = await prisma.eventSubMessage.count({
+    where: { messageId }
+  });
+
+  return count > 0;
+};
+
+export const saveMessage = async (messageId, messageType, payload) => {
+  const result = await prisma.eventSubMessage.create({
+    data: {
+      messageId,
+      messageType,
+      payload
+    }
+  });
+
+  return result;
+};

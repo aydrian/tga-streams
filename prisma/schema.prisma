@@ -54,3 +54,11 @@ model Notification {
 
   @@map("notifications")
 }
+
+model EventSubMessage {
+  messageId   String @id @map("message_id")
+  messageType String @map("message_type")
+  payload     Json   @db.JsonB
+
+  @@map("eventsub_messages")
+}
