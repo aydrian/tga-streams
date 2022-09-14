@@ -1,0 +1,1 @@
+ALTER TABLE IF EXISTS eventsub_messages SET (ttl_expire_after = '7 days');
