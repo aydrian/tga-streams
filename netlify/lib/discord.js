@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const CHANNELS = {
+export const CHANNELS = {
   BOT_TESTING: "785256298203447296",
   GOING_LIVE: "775445396776288318"
 };

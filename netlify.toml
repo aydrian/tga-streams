@@ -7,6 +7,11 @@ from = "/webhooks/twitch"
 to = "/.netlify/functions/twitch_eventsub"
 status = 200
 
+[[redirects]]
+from = "/webhooks/discord"
+to = "/.netlify/functions/discord_interaction"
+status = 200
+
 [functions]
 node_bundler = "esbuild"
 external_node_modules = ["@ampproject/toolbox-optimizer"]

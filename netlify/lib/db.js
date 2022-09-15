@@ -105,3 +105,25 @@ export const saveMessage = async (messageId, messageType, payload) => {
 
   return result;
 };
+
+export const getStreamers = async () => {
+  const streamers = await prisma.streamer.findMany({
+    select: {
+      twitchName: true,
+      discordName: true,
+      Stream: {
+        where: {
+          endedAt: null
+        }
+      },
+      _count: {
+        select: {
+          Subscriptions: true
+        }
+      }
+    },
+    orderBy: { discordName: "asc" }
+  });
+
+  return streamers;
+};
