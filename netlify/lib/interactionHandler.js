@@ -9,6 +9,17 @@ export const handleStreamers = async (interaction) => {
   if (subcommand.name === "list") {
     const response = await getListStreamersResponse();
     return response;
+  } else if (subcommand.name === "add") {
+    console.log(subcommand);
+    const [userOpt, twitchOpt] = subcommand.options;
+    console.log(userOpt);
+
+    return {
+      type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+      data: {
+        content: `Add ${twitchOpt.value} for Discord User ${"blah"}`
+      }
+    };
   }
 
   return {
