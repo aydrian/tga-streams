@@ -37,7 +37,7 @@ const getAddStreamersResponse = async (discordId, twitchName) => {
   const profileImgUrl = twitchUser.profilePictureUrl;
   const guildMember = await getGuildMember(discordId);
   console.log("Guild Member: ", guildMember);
-  const discordName = guildMember.nick || guildMember.user.name;
+  const discordName = guildMember.nick || guildMember.user.username;
   console.log("Discord Name: ", discordName);
 
   let content = "";
