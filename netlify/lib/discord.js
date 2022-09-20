@@ -120,7 +120,7 @@ export const sendOffline = async (notif, discordUser, video) => {
 
 export const getGuildMember = async (userId) => {
   const { data } = await axios.get(
-    `https://discord.com/api/guilds/${GUILD_ID}/members/${userId}`,
+    `https://discord.com/api/v10/guilds/${GUILD_ID}/members/${userId}`,
     {
       headers: {
         Authorization: `Bot ${process.env.DISCORD_BOT_TOKEN}`
