@@ -50,6 +50,7 @@ const getAddStreamersResponse = async (discordId, twitchName) => {
     );
     content = `<@${discordId}> successfully added as streamer.`;
   } catch (err) {
+    console.log(err);
     content = `An error occurred adding <@${discordId}> as a streamer.`;
   }
 
