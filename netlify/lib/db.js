@@ -127,3 +127,16 @@ export const getStreamers = async () => {
 
   return streamers;
 };
+
+export const addStreamer = async (
+  discordId,
+  discordName,
+  twitchId,
+  twitchName,
+  profileImgUrl
+) => {
+  const result = prisma.streamer.create({
+    data: { discordId, discordName, twitchId, twitchName, profileImgUrl }
+  });
+  return result;
+};

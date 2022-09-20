@@ -5,6 +5,8 @@ export const CHANNELS = {
   GOING_LIVE: "775445396776288318"
 };
 
+export const GUILD_ID = "508760113402609678";
+
 export const getMessage = async (channelId, messageId) => {
   const { data } = await axios.get(
     `https://discord.com/api/channels/${channelId}/messages/${messageId}`,
@@ -114,4 +116,16 @@ export const sendOffline = async (notif, discordUser, video) => {
     embeds: [embed]
   });
   return message;
+};
+
+export const getGuildMember = async (userId) => {
+  const { data } = await axios.get(
+    `https://discord.com/api/guilds/${GUILD_ID}/members/${userId}`,
+    {
+      headers: {
+        Authorization: `Bot ${process.env.DISCORD_BOT_TOKEN}`
+      }
+    }
+  );
+  return data;
 };

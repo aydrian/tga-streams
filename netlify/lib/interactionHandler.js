@@ -1,6 +1,8 @@
 import { InteractionResponseType } from "discord-interactions";
-import { getStreamers } from "./db";
+import { getStreamers, addStreamer } from "./db";
 import { CHANNELS } from "./discord";
+import { twitch } from "./twitch";
+import { getGuildMember } from "./discord";
 
 export const handleStreamers = async (interaction) => {
   const command = interaction.data;
@@ -10,22 +12,51 @@ export const handleStreamers = async (interaction) => {
     const response = await getListStreamersResponse();
     return response;
   } else if (subcommand.name === "add") {
-    console.log(subcommand);
     const [userOpt, twitchOpt] = subcommand.options;
     console.log(userOpt);
 
-    return {
-      type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
-      data: {
-        content: `Add ${twitchOpt.value} for Discord User ${"blah"}`
-      }
-    };
+    const response = await getAddStreamersResponse(
+      userOpt.value,
+      twitchOpt.value
+    );
+
+    return response;
   }
 
   return {
     type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
     data: {
       content: `You used: ${command.name} ${subcommand.name}`
+    }
+  };
+};
+
+const getAddStreamersResponse = async (discordId, twitchName) => {
+  const twitchUser = await twitch.users.getUserByName(twitchName);
+  const twitchId = twitchUser.id;
+  const profileImgUrl = twitchUser.profilePictureUrl;
+  const guildMember = await getGuildMember(discordId);
+  const discordName = guildMember.nick || guildMember.user.name;
+
+  let content = "";
+
+  try {
+    await addStreamer(
+      discordId,
+      discordName,
+      twitchId,
+      twitchName,
+      profileImgUrl
+    );
+    content = `<@${discordId}> successfully added as streamer.`;
+  } catch (err) {
+    content = `An error occurred adding <@${discordId}> as a streamer.`;
+  }
+
+  return {
+    type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+    data: {
+      content
     }
   };
 };
