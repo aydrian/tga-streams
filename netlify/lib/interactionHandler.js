@@ -1,8 +1,7 @@
 import { InteractionResponseType } from "discord-interactions";
 import { getStreamers, addStreamer } from "./db";
-import { CHANNELS } from "./discord";
+import { CHANNELS, getGuildMember } from "./discord";
 import { twitch } from "./twitch";
-import { getGuildMember } from "./discord";
 
 export const handleStreamers = async (interaction) => {
   const command = interaction.data;
@@ -59,7 +58,8 @@ const getAddStreamersResponse = async (discordId, twitchName) => {
   return {
     type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
     data: {
-      content
+      content,
+      flags: 1 << 6
     }
   };
 };
