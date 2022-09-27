@@ -1,6 +1,6 @@
 import { PrismaClient } from "@prisma/client";
 
-const prisma = new PrismaClient();
+export const prisma = new PrismaClient();
 
 export const saveStream = async (stream, streamer) => {
   const upsertStream = await prisma.stream.upsert({

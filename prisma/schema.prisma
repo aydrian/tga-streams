@@ -14,7 +14,7 @@ datasource db {
 model Streamer {
   twitchId      String         @id @map("twitch_id")
   twitchName    String         @map("twitch_name")
-  discordId     String         @map("discord_id")
+  discordId     String         @unique @map("discord_id")
   discordName   String         @map("discord_name")
   profileImgUrl String?        @map("profile_image_url")
   Subscriptions Subscription[]

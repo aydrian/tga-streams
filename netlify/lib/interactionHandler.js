@@ -1,5 +1,5 @@
 import { InteractionResponseType } from "discord-interactions";
-import { getStreamers, addStreamer } from "./db";
+import { getStreamers, addStreamer, prisma } from "./db";
 import { CHANNELS, getGuildMember } from "./discord";
 import { twitch } from "./twitch";
 
@@ -20,6 +20,10 @@ export const handleStreamers = async (interaction) => {
     );
 
     return response;
+  } else if (subcommand.name === "remove") {
+    const [userOpt] = subcommand.options;
+
+    const response = await getRemoveStreamerResponse(userOpt.value);
   }
 
   return {
@@ -53,6 +57,40 @@ const getAddStreamersResponse = async (discordId, twitchName) => {
   } catch (err) {
     console.log(err);
     content = `An error occurred adding <@${discordId}> as a streamer.`;
+  }
+
+  return {
+    type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+    data: {
+      content,
+      flags: 1 << 6
+    }
+  };
+};
+
+const getRemoveStreamerResponse = async (discordId) => {
+  let content = "";
+
+  try {
+    const streamer = prisma.streamer.findUnique({
+      select: { Subscriptions: { select: { id: true } } },
+      where: { discordId }
+    });
+
+    const unsubs = streamer.Subscriptions.map((sub) => {
+      return twitch.eventSub.deleteSubscription(sub.id);
+    });
+
+    if (unsubs.length > 0) {
+      await Promise.all(unsubs);
+    }
+
+    await prisma.streamer.delete({ where: { discordId } });
+
+    content = `<@${discordId}> successfully removed as a streamer.`;
+  } catch (ex) {
+    console.log(err);
+    content = `An error occurred removing <@${discordId}> as a streamer.`;
   }
 
   return {
