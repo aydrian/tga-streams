@@ -24,6 +24,7 @@ export const handleStreamers = async (interaction) => {
     const [userOpt] = subcommand.options;
 
     const response = await getRemoveStreamerResponse(userOpt.value);
+    return response;
   }
 
   return {
