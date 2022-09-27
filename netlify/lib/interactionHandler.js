@@ -73,7 +73,7 @@ const getRemoveStreamerResponse = async (discordId) => {
   let content = "";
 
   try {
-    const streamer = prisma.streamer.findUnique({
+    const streamer = await prisma.streamer.findUnique({
       select: { Subscriptions: { select: { id: true } } },
       where: { discordId }
     });
