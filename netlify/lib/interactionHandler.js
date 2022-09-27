@@ -88,7 +88,7 @@ const getRemoveStreamerResponse = async (discordId) => {
     await prisma.streamer.delete({ where: { discordId } });
 
     content = `<@${discordId}> successfully removed as a streamer.`;
-  } catch (ex) {
+  } catch (err) {
     console.log(err);
     content = `An error occurred removing <@${discordId}> as a streamer.`;
   }
