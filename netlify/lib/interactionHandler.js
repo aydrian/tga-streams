@@ -1,7 +1,7 @@
 import { InteractionResponseType } from "discord-interactions";
 import { getStreamers, addStreamer, prisma } from "./db";
 import { CHANNELS, getGuildMember } from "./discord";
-import { twitch } from "./twitch";
+import { subscribe, twitch } from "./twitch";
 
 export const handleStreamers = async (interaction) => {
   const command = interaction.data;
@@ -24,6 +24,11 @@ export const handleStreamers = async (interaction) => {
     const [userOpt] = subcommand.options;
 
     const response = await getRemoveStreamerResponse(userOpt.value);
+    return response;
+  } else if (subcommand.name === "subscribe") {
+    const [userOpt] = subcommand.options;
+
+    const response = await getSubStreamerResponse(userOpt.value);
     return response;
   }
 
@@ -92,6 +97,51 @@ const getRemoveStreamerResponse = async (discordId) => {
   } catch (err) {
     console.log(err);
     content = `An error occurred removing <@${discordId}> as a streamer.`;
+  }
+
+  return {
+    type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+    data: {
+      content,
+      flags: 1 << 6
+    }
+  };
+};
+
+const getSubStreamerResponse = async (discordId) => {
+  let content = "";
+  try {
+    const streamer = await prisma.streamer.findUnique({
+      select: { twitchId: true },
+      where: { discordId }
+    });
+
+    if (!streamer) {
+      content = `<@${discordId}> is not a streamer.`;
+    } else {
+      const subOnline = await subscribe(streamer.twitchId, "stream.online");
+
+      await prisma.subscription.create({
+        data: {
+          streamerId: streamer.twitchId,
+          type: "stream.online",
+          id: subOnline.data[0].id
+        }
+      });
+
+      const subOffline = await subscribe(streamer.twitchId, "stream.offline");
+      await prisma.subscription.create({
+        data: {
+          streamerId: streamer.twitchId,
+          type: "stream.offline",
+          id: subOffline.data[0].id
+        }
+      });
+    }
+    content = `Successfully subscribed to <@${discordId}> stream notifications.`;
+  } catch (err) {
+    console.log(err);
+    content = `An error occurred subscribing to <@${discordId}> stream notifications.`;
   }
 
   return {
